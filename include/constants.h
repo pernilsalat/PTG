@@ -11,8 +11,8 @@ namespace constants {
 		namespace defaultValues {
 			static constexpr float YAW = 45;
 			static constexpr float PITCH = 0;
-			static constexpr float SPEED = 70.0f;
-			static constexpr double SENSITIVITY = 0.05;
+			static constexpr float SPEED = 2.0f;
+			static constexpr double SENSITIVITY = 0.01;
 			static constexpr float FOV = 60;
 
 		}

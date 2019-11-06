@@ -3,11 +3,12 @@ project(OpenGLSetup)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(SOURCE_FILES include/glad/glad.c)
-file(GLOB SOURCES "src/**/*.cpp")
-file(GLOB HEADERS "src/**/*.h")
+file(GLOB_RECURSE SOURCES src/*.cpp)
+set(SOURCE_FILES ${SOURCES} include/glad/glad.c)
 
-set(HEADER_FILES shader.h)
+file(GLOB_RECURSE HEADERS src/*.h )
+set(HEADER_FILES ${HEADERS})
+
 
 set(dir ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${dir}/build)

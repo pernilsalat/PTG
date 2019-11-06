@@ -205,7 +205,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 #include <constants.h>
 
-#include "./src/Engine/Engine.h"
+#include "Engine/Engine.h"
 
 int main(int argc, char* argv[]) {
     Engine engine;
