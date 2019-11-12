@@ -1,10 +1,10 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <constants.h>
 #include <functional>
 #include <vector>
 #include <map>
-#include <constants.h>
 #include "../src/Camera/Camera.h"
 using namespace std;
 using namespace constants::inputTypes;
@@ -13,9 +13,9 @@ class KeyInput
 {
 public:
 	// Takes a list of which keys to keep state for
-	KeyInput(map<int, function<void(map<int, bool>*)>> keysToMonitor, InputType type);
-	KeyInput(map<int, function<void(double, double)>> keysToMonitor, InputType type);
-	KeyInput(map<int, function<void(double)>> keysToMonitor, InputType type);
+	KeyInput(const map<int, function<void(map<int, bool>*)>>& keysToMonitor, InputType type);
+	KeyInput(const map<int, function<void(double, double, bool)>>& keysToMonitor, InputType type);
+	KeyInput(const map<int, function<void(double)>>& keysToMonitor, InputType type);
 	~KeyInput();
 
 	// If this KeyInput is enabled and the given key is monitored,
@@ -33,12 +33,12 @@ private:
 	map<int, bool> _keys;
 	// Map from monitored keyes to their respective actions
 	map<int, function<void(map<int, bool>*)>> _keyActions;
-	map<int, function<void(double, double)>> _dragActions;
+	map<int, function<void(double, double, bool)>> _dragActions;
 	map<int, function<void(double)>> _scrollActions;
 
 	// Used internally to update key states.  Called by the GLFW callback.
 	void setIsKeyDown(int key, bool isDown);
-	void setNewPosition(double xoffset, double yoffset);
+	void setNewPosition(double xoffset, double yoffset, bool mousePressed);
 	void setNewScroll(double yoffset);
 
 public:

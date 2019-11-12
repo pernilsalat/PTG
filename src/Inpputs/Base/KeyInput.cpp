@@ -4,10 +4,10 @@
 
 map<InputType, vector<KeyInput*>> KeyInput::_instances;
 
-KeyInput::KeyInput(map<int, function<void(map<int, bool>*)>> keysToMonitor, InputType type)
+KeyInput::KeyInput(const map<int, function<void(map<int, bool>*)>>& keysToMonitor, InputType type)
 	: _isEnabled(true), _keyActions(keysToMonitor), type(type)
 {
-	for (auto iter : keysToMonitor) {
+	for (const auto& iter : keysToMonitor) {
 		_keys[iter.first] = false;
 	}
 	_position = _instances[type].size();
@@ -15,10 +15,10 @@ KeyInput::KeyInput(map<int, function<void(map<int, bool>*)>> keysToMonitor, Inpu
 	_instances[type].push_back(this);
 }
 
-KeyInput::KeyInput(map<int, function<void(double, double)>> keysToMonitor, InputType type)
+KeyInput::KeyInput(const map<int, function<void(double, double, bool)>>& keysToMonitor, InputType type)
 	: _isEnabled(true), _dragActions(keysToMonitor), type(type)
 {
-	for (auto iter : keysToMonitor) {
+	for (const auto& iter : keysToMonitor) {
 		_keys[iter.first] = false;
 	}
 	_position = _instances[type].size();
@@ -26,10 +26,10 @@ KeyInput::KeyInput(map<int, function<void(double, double)>> keysToMonitor, Input
 	_instances[type].push_back(this);
 }
 
-KeyInput::KeyInput(map<int, function<void(double)>> keysToMonitor, InputType type)
+KeyInput::KeyInput(const map<int, function<void(double)>>& keysToMonitor, InputType type)
 	: _isEnabled(true), _scrollActions(keysToMonitor), type(type)
 {
-	for (auto iter : keysToMonitor) {
+	for (const auto& iter : keysToMonitor) {
 		_keys[iter.first] = false;
 	}
 	_position = _instances[type].size();
@@ -67,9 +67,9 @@ void KeyInput::setIsKeyDown(int key, bool isDown)
 	}
 }
 
-void KeyInput::setNewPosition(double xoffset, double yoffset)
+void KeyInput::setNewPosition(double xoffset, double yoffset, bool mousePressed)
 {
-	_dragActions[constants::DRAG](xoffset, yoffset);
+	_dragActions[constants::DRAG](xoffset, yoffset, mousePressed);
 }
 
 void KeyInput::setNewScroll(double yoffset)
@@ -103,11 +103,8 @@ void KeyInput::callbackMouseScroll(GLFWwindow* window, double xoffset, double yo
 
 void KeyInput::callbackMousePosition(GLFWwindow* window, double xpos, double ypos)
 {
-	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
-	{
-		// Send key event to all KeyInput instances
-		for (KeyInput* keyInput : _instances[InputType::MOUSE_DRAG]) {
-			keyInput->setNewPosition(xpos, ypos);
-		}
-	}
+    // Send key event to all KeyInput instances
+    for (KeyInput* keyInput : _instances[InputType::MOUSE_DRAG]) {
+        keyInput->setNewPosition(xpos, ypos, glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS);
+    }
 }

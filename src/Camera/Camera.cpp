@@ -2,7 +2,6 @@
 #include "Camera.h"
 #include <glm/gtx/string_cast.hpp>
 
-using namespace std;
 
 Camera::Camera(vec3 position, vec3 up, GLfloat speed, GLfloat yaw, GLfloat pitch) :
 	front(vec3(0, 0, -1)), movementSpeed(speed), mouseSensitivity(defaultValues::SENSITIVITY), fov(defaultValues::FOV),
@@ -84,8 +83,10 @@ void Camera::processKeyboard(CameraMovement action, GLfloat deltaTime)
 
 void Camera::processMouseMovement(GLfloat xoffset, GLfloat yoffset, GLboolean constrainPitch)
 {
-	yaw += xoffset * mouseSensitivity;
-	pitch += yoffset * mouseSensitivity;
+    GLfloat xdiff, ydiff;
+    tie(xdiff, ydiff) = calculateOffsetDiff(xoffset, yoffset);
+	yaw += xdiff * mouseSensitivity;
+	pitch += ydiff * mouseSensitivity;
 
 	if (constrainPitch) {
 		if (pitch > MAX_PITCH)
@@ -130,3 +131,18 @@ void Camera::updateCameraVectors()
 	right = normalize(cross(this->front, worldUp));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
 	up = normalize(cross(right, this->front));
 }
+
+tuple<GLfloat, GLfloat> Camera::calculateOffsetDiff(GLfloat xoffset, GLfloat yoffset) {
+    if (!mousePressed) {
+        prevXoffset = xoffset;
+        prevYoffset = yoffset;
+    }
+    GLfloat xdiff = xoffset - prevXoffset;
+    GLfloat ydiff = prevYoffset - yoffset;
+
+    prevXoffset = xoffset;
+    prevYoffset = yoffset;
+
+    return make_tuple(xdiff, ydiff);
+}
+

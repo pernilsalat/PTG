@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.15)
 project(OpenGLSetup)
 
 set(CMAKE_CXX_STANDARD 17)
+#set(CMAKE_CXX_STANDARD_REQUIRED ON)
+#set(CMAKE_CXX_EXTENSIONS OFF)
 
 file(GLOB_RECURSE SOURCES src/*.cpp)
 set(SOURCE_FILES ${SOURCES} include/glad/glad.c)

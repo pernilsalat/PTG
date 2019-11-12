@@ -28,7 +28,7 @@ private:
 
 	map<int, function<void(map<int, bool>*)>> keyActions;
 
-	void processInput();
+	static void processInput();
 	void update();
 	void generateOutput();
 };

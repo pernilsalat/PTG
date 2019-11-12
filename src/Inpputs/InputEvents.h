@@ -1,11 +1,11 @@
 #pragma once
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <map>
-#include <functional>
-#include "../src/Camera/Camera.h"
-#include <iostream>
 #include <constants.h>
+#include <functional>
+#include <iostream>
+#include <map>
+#include "../src/Camera/Camera.h"
 using namespace std;
 
 map<int, function<void(map<int, bool>*)>> setupKeyActions(Camera* camera, double *deltaTime) {
@@ -17,9 +17,16 @@ map<int, function<void(map<int, bool>*)>> setupKeyActions(Camera* camera, double
 	};
 };
 
-map<int, function<void(double, double)>> setupMouseDragActions(Camera* camera) {
+map<int, function<void(double, double, bool)>> setupMouseDragActions(Camera* camera) {
 	return {
-		{ constants::DRAG, [=](double xpos, double ypos) -> void { camera->processMouseMovement(xpos, ypos); } },
+		{ constants::DRAG, [=](double xpos, double ypos, bool mousePressed) -> void {
+		    if (mousePressed) {
+		        camera->processMouseMovement(xpos, ypos);
+		        camera->mousePressed = true;
+            } else {
+		        camera->mousePressed = false;
+		    }}
+		},
 	};
 };
 

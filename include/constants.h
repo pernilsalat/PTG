@@ -9,11 +9,11 @@ namespace constants {
 	namespace camera {
 		// Default camera values
 		namespace defaultValues {
-			static constexpr float YAW = 45;
+			static constexpr float YAW = -90;
 			static constexpr float PITCH = 0;
 			static constexpr float SPEED = 2.0f;
-			static constexpr double SENSITIVITY = 0.01;
-			static constexpr float FOV = 60;
+			static constexpr double SENSITIVITY = 0.1;
+			static constexpr float FOV = 45;
 
 		}
 		static constexpr float MAX_FOV = 90;

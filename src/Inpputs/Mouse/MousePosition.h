@@ -6,7 +6,7 @@ class MousePosition : public KeyInput {
 public:
 	using KeyInput::KeyInput;
 
-	MousePosition(map<int, function<void(double, double)>> keysToMonitor)
+	MousePosition(map<int, function<void(double, double, bool)>> keysToMonitor)
 		: KeyInput(keysToMonitor, constants::inputTypes::InputType::MOUSE_DRAG) {};
 
 	void setupKeyInputs(GLFWwindow* window) override {

@@ -2,9 +2,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 #include <constants.h>
+#include <glm/gtc/matrix_transform.hpp>
+#include <tuple>
 
+using namespace std;
 using namespace glm;
 using namespace constants::camera;
 
@@ -38,6 +40,8 @@ public:
 	GLfloat movementSpeed;
 	GLdouble mouseSensitivity;
 	GLfloat fov;
+	GLfloat prevXoffset{}, prevYoffset{};
+	GLboolean mousePressed = false;
 
 	// constructor with vectors
 	explicit Camera(vec3 position = vec3(0, 0, 0), vec3 up = vec3(0, 1, 0),
@@ -64,8 +68,10 @@ public:
 	void processMouseScroll(GLfloat yoffset);
 
 	void debug();
+
 private:
 	// Calculates the front vector from the Camera's (updated) Eular Angles
 	void updateCameraVectors();
+	tuple<GLfloat, GLfloat> calculateOffsetDiff(GLfloat xoffset, GLfloat yoffset);
 };
 
